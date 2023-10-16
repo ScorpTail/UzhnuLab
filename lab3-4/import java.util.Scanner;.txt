@@ -1,0 +1,146 @@
+import java.util.Scanner;
+
+class Main {
+    static char[][] map;
+    static Scanner scanner;
+    static final int MAP_SIZE = 3;
+    final static char EMPTY_FIELD = '■';
+    final static char O_CHAR = '⃝';
+    final static char X_CHAR = '✘';
+
+    public static void main(String[] args) {
+        initMap();
+        printGameMap();
+        while (true) {
+            human();
+            printGameMap();
+            if (checkWin(X_CHAR)) {
+                System.out.println("Гру закінчено! Переможець гравець");
+            }
+            if (checkDraft()) {
+                System.out.println("Гру закінчено!");
+                break;
+            }
+            
+            AI();
+            printGameMap();
+            if (checkWin(X_CHAR)) {
+                System.out.println("Гру закінчено! Переміг коп'ютер");
+            }
+            if (checkDraft()) {
+                System.out.println("Гру закінчено!");
+                break;
+            }
+        }
+
+    }
+
+    public static void human() {
+        int positionX, positionY;
+        do {
+            System.out.println("Введіть координати клітинки Горизонтально 1, 2 або 3");
+            positionX = scanner.nextInt() - 1;
+            positionY = revertCharToNumber();
+        } while (!isCellValid(positionX, positionY));
+
+        map[positionY][positionX] = O_CHAR;
+    }
+
+    public static void AI() {
+        int positionX, positionY;
+        do {
+            positionX = scanner.nextInt() - 1;
+            positionY = revertCharToNumber();
+        } while (!isCellValid(positionX, positionY));
+
+        map[positionY][positionX] = X_CHAR;
+    }
+
+    public static int revertCharToNumber() {
+        int result;
+        String positionY = scanner.nextLine();
+        switch (positionY) {
+            case "A":
+                result = 0;
+                break;
+            case "B":
+                result = 1;
+                break;
+            case "C":
+                result = 2;
+                break;
+            default:
+                System.out.println("Оберіть вертикаль: A, B, C");
+                return revertCharToNumber();
+        }
+        return result;
+    }
+
+    public static boolean isCellValid(int x, int y) {
+        if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE) {
+            return false;
+        }
+
+        if (map[y][x] != EMPTY_FIELD) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean checkWin(char playerChar) {
+        if (map[0][0] == playerChar && map[0][1] == playerChar && map[0][2] == playerChar) return true;
+        if (map[1][0] == playerChar && map[1][1] == playerChar && map[1][2] == playerChar) return true;
+        if (map[2][0] == playerChar && map[2][1] == playerChar && map[2][2] == playerChar) return true;
+
+
+        if (map[0][0] == playerChar && map[1][0] == playerChar && map[2][0] == playerChar) return true;
+        if (map[0][1] == playerChar && map[1][1] == playerChar && map[2][1] == playerChar) return true;
+        if (map[0][2] == playerChar && map[1][2] == playerChar && map[2][2] == playerChar) return true;
+
+        if (map[0][2] == playerChar && map[1][1] == playerChar && map[2][2] == playerChar) return true;
+        if (map[0][2] == playerChar && map[1][1] == playerChar && map[2][0] == playerChar) return true;
+
+        return false;
+    }
+
+    public static boolean checkDraft() {
+        for (int i = 0; i < MAP_SIZE; i++) {
+            for (int j = 0; j < MAP_SIZE; j++) {
+                if (map[i][j] == EMPTY_FIELD) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static void initMap() {
+        map = new char[MAP_SIZE][MAP_SIZE];
+        for (int vertical = 0; vertical < MAP_SIZE; vertical++) {
+            for (int horizontal = 0; horizontal < MAP_SIZE; horizontal++) {
+                map[vertical][horizontal] = EMPTY_FIELD;
+            }
+        }
+    }
+
+    public static void printGameMap() {
+        System.out.println(" ———————————————————");
+        for (int i = 1; i < MAP_SIZE + 1; i++) {
+            System.out.print("    " + i + "  ");
+        }
+        System.out.println();
+        for (int vertical = 0; vertical < MAP_SIZE; vertical++) {
+            char[] s = {'A', 'B', 'C'};
+            System.out.print(s[vertical]);
+            for (int horizontal = 0; horizontal < MAP_SIZE; horizontal++) {
+                System.out.print(" | " + map[vertical][horizontal] + " | ");
+            }
+            System.out.println();
+        }
+        System.out.println(" ———————————————————");
+
+        scanner = new Scanner(System.in);
+    }
+}
