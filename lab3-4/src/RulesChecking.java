@@ -71,9 +71,9 @@ public class RulesChecking {
 
     //ПЕРЕВІРКА ЧИ ЗАЛИШИЛИСЬ ЩЕ ХОДИ(ПУСТІ КЛІТИНКИ) НА КАРТІ
     public static boolean checkDraft() {
-        for (int i = 0; i < MapRendering.MAP_SIZE; i++) {
-            for (int j = 0; j < MapRendering.MAP_SIZE; j++) {
-                if (Main.map[i][j] == MapRendering.EMPTY_FIELD) {
+        for (int vertical = 0; vertical < MapRendering.MAP_SIZE; vertical++) {
+            for (int horizontal = 0; horizontal < MapRendering.MAP_SIZE; horizontal++) {
+                if (Main.map[vertical][horizontal] == MapRendering.EMPTY_FIELD) {
                     return false;
                 }
             }
