@@ -6,13 +6,13 @@ public class RulesChecking {
         Main.scanner.nextLine();
         System.out.println("Оберіть вертикаль: A, B, C");
         switch (Main.scanner.next()) {
-            case "A":
+            case "A", "a", "А", "а":
                 result = 0;
                 break;
-            case "B":
+            case "B", "b", "Б", "б":
                 result = 1;
                 break;
-            case "C":
+            case "C", "c", "С", "с":
                 result = 2;
                 break;
             default:
